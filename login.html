@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in · Tic-Tac-Toe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <!-- Floating 3D X / O pieces, built in login.js -->
+    <div class="scene" aria-hidden="true">
+        <div class="scene-inner" id="scene"></div>
+    </div>
+
+    <main class="stage">
+        <div class="card-tilt" id="tilt">
+            <div class="card" id="card">
+
+                <!-- Front: sign in -->
+                <section class="face face-front" id="face-login" aria-labelledby="login-title">
+                    <header class="brand">
+                        <div class="cube" aria-hidden="true">
+                            <span class="cube-face f1">X</span>
+                            <span class="cube-face f2">O</span>
+                            <span class="cube-face f3">X</span>
+                            <span class="cube-face f4">O</span>
+                            <span class="cube-face f5">X</span>
+                            <span class="cube-face f6">O</span>
+                        </div>
+                        <div>
+                            <h1 id="login-title">Welcome back</h1>
+                            <p class="sub">Sign in to continue your streak.</p>
+                        </div>
+                    </header>
+
+                    <form id="login-form" novalidate>
+                        <div class="field">
+                            <label for="login-email">Email</label>
+                            <input id="login-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+                            <p class="error" id="login-email-error" aria-live="polite"></p>
+                        </div>
+                        <div class="field">
+                            <label for="login-password">Password</label>
+                            <div class="password">
+                                <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required minlength="8">
+                                <button type="button" class="toggle-pw" aria-label="Show password" aria-pressed="false">Show</button>
+                            </div>
+                            <p class="error" id="login-password-error" aria-live="polite"></p>
+                        </div>
+                        <label class="check">
+                            <input type="checkbox" name="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <button type="submit" class="btn-primary">
+                            <span class="btn-label">Sign in</span>
+                            <span class="spinner" aria-hidden="true"></span>
+                        </button>
+                        <p class="status" role="status" aria-live="polite"></p>
+                    </form>
+
+                    <p class="switch">New here? <button type="button" class="link" data-flip="signup">Create an account</button></p>
+                </section>
+
+                <!-- Back: sign up -->
+                <section class="face face-back" id="face-signup" aria-labelledby="signup-title" inert>
+                    <header class="brand">
+                        <div class="cube" aria-hidden="true">
+                            <span class="cube-face f1">O</span>
+                            <span class="cube-face f2">X</span>
+                            <span class="cube-face f3">O</span>
+                            <span class="cube-face f4">X</span>
+                            <span class="cube-face f5">O</span>
+                            <span class="cube-face f6">X</span>
+                        </div>
+                        <div>
+                            <h1 id="signup-title">Join the board</h1>
+                            <p class="sub">Pick a name, claim your mark.</p>
+                        </div>
+                    </header>
+
+                    <form id="signup-form" novalidate>
+                        <div class="field">
+                            <label for="signup-name">Player name</label>
+                            <input id="signup-name" name="name" type="text" autocomplete="nickname" placeholder="TicTacPro" required minlength="2" maxlength="20">
+                            <p class="error" id="signup-name-error" aria-live="polite"></p>
+                        </div>
+                        <div class="field">
+                            <label for="signup-email">Email</label>
+                            <input id="signup-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+                            <p class="error" id="signup-email-error" aria-live="polite"></p>
+                        </div>
+                        <div class="field">
+                            <label for="signup-password">Password</label>
+                            <div class="password">
+                                <input id="signup-password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" required minlength="8">
+                                <button type="button" class="toggle-pw" aria-label="Show password" aria-pressed="false">Show</button>
+                            </div>
+                            <p class="error" id="signup-password-error" aria-live="polite"></p>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <span class="btn-label">Create account</span>
+                            <span class="spinner" aria-hidden="true"></span>
+                        </button>
+                        <p class="status" role="status" aria-live="polite"></p>
+                    </form>
+
+                    <p class="switch">Already playing? <button type="button" class="link" data-flip="login">Sign in</button></p>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="login.js"></script>
+</body>
+</html>
