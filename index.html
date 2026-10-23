@@ -4,31 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-Tac-Toe game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="game.css">
 </head>
 <body>
-    <div class="msg-container hide">
-        <p id="msg">Winner</p>
-        <button id="new-btn">New Game</button>
+    <!-- Moving holographic floor -->
+    <div class="floor" aria-hidden="true"><div class="floor-plane"></div></div>
 
-    </div>
-    <main>
-        <h1>Tic-Tac-Toe</h1>
-        <div class="container">
-            <div class="game-container">
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
+    <header class="topbar">
+        <span class="logo">TTT<span>//</span>BOT</span>
+        <span class="player" id="player"></span>
+        <a class="signout" href="login.html">Sign out</a>
+    </header>
+
+    <main class="arena">
+        <section class="bot-stage">
+            <div class="bot-scene" aria-hidden="true">
+                <div class="bot" id="bot" data-mood="idle"></div>
+                <div class="bot-shadow"></div>
             </div>
-        </div>
-        <button id="reset-btn">Reset Game</button>
+            <p class="bot-says" id="bot-says" aria-live="polite">Systems online. O goes first.</p>
+        </section>
+
+        <section class="play">
+            <h1>Tic-Tac-Toe</h1>
+            <p class="turn" id="turn">Turn: <b class="o">O</b></p>
+            <div class="container">
+                <div class="game-container">
+                    <button class="box" aria-label="Cell 1"></button>
+                    <button class="box" aria-label="Cell 2"></button>
+                    <button class="box" aria-label="Cell 3"></button>
+                    <button class="box" aria-label="Cell 4"></button>
+                    <button class="box" aria-label="Cell 5"></button>
+                    <button class="box" aria-label="Cell 6"></button>
+                    <button class="box" aria-label="Cell 7"></button>
+                    <button class="box" aria-label="Cell 8"></button>
+                    <button class="box" aria-label="Cell 9"></button>
+                </div>
+            </div>
+            <button id="reset-btn">Reset Game</button>
+        </section>
     </main>
+
+    <div class="msg-container hide" role="dialog" aria-modal="true" aria-labelledby="msg">
+        <div class="msg-panel">
+            <p id="msg">Winner</p>
+            <button id="new-btn">New Game</button>
+        </div>
+    </div>
+
+    <script src="robot.js"></script>
     <script src="game.js"></script>
 </body>
 </html>

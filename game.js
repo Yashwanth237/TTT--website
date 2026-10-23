@@ -3,8 +3,11 @@ let resetBtn = document.querySelector("#reset-btn");
 let newGameBtn =document.querySelector("#new-btn");
 let msgContainer = document.querySelector(".msg-container");
 let msg = document.querySelector("#msg");
+let turn = document.querySelector("#turn");
+let playerTag = document.querySelector("#player");
 
 let trunO = true; //playerX PlayerO
+let resultTimer = null;
 
 const winning = [
     [0,1,2],
@@ -17,26 +20,53 @@ const winning = [
     [6,7,8],
 ];
 
-boxes.forEach((box)=>{
+// Name saved by the login page
+try {
+    const player = sessionStorage.getItem("ttt-player");
+    if (player) playerTag.textContent = `Player: ${player}`;
+} catch (err) {
+    // Storage unavailable; just leave the name off.
+}
+
+const showTurn = () => {
+    const mark = trunO ? "O" : "X";
+    turn.innerHTML = `Turn: <b class="${mark.toLowerCase()}">${mark}</b>`;
+};
+
+boxes.forEach((box, index)=>{
     box.addEventListener("click", () => {
        // console.log("Box was clicked");
+        let mark;
         if(trunO){
-            box.innerText = 'O';
+            mark = 'O';
             trunO = false;
         }else{
-            box.innerText = 'X';
-            trunO = true; 
+            mark = 'X';
+            trunO = true;
         }
+        box.innerText = mark;
+        box.classList.add(mark.toLowerCase());
+        box.setAttribute("aria-label", `Cell ${index + 1}: ${mark}`);
         box.disabled = true;
+
+        robot.look(index);
+        robot.mood("think");
+        robot.say(`${mark} on cell ${index + 1}. Your move, ${trunO ? "O" : "X"}.`);
+        showTurn();
 
         checkWinner();
     });
 });
 
 const resetGame= () => {
+    clearTimeout(resultTimer);
     trunO = true;
     enableBoxes();
     msgContainer.classList.add("hide");
+    showTurn();
+    robot.look(null);
+    robot.mood("idle");
+    robot.say("Board cleared. O goes first.");
 };
 
 
@@ -47,16 +77,39 @@ const disableBoxes = () => {
 };
 
 const enableBoxes = () => {
-    for(let box of boxes){
+    boxes.forEach((box, index) => {
         box.disabled = false;
         box.innerText= "";
-    }
+        box.classList.remove("o", "x", "win");
+        box.setAttribute("aria-label", `Cell ${index + 1}`);
+    });
 };
 
-const showWinner = (winner) =>{
+const showWinner = (winner, pattern) =>{
     msg.innerText = `Congratulations, Winner is ${winner}`;
-    msgContainer.classList.remove("hide");
+    pattern.forEach((i) => boxes[i].classList.add("win"));
     disableBoxes();
+    turn.textContent = "Game over";
+    robot.look(null);
+    robot.mood("win");
+    robot.say(`${winner} wins! Celebration protocol engaged.`);
+    // Let the winning line light up before the panel covers it
+    resultTimer = setTimeout(() => {
+        msgContainer.classList.remove("hide");
+        newGameBtn.focus();
+    }, 900);
+};
+
+const showDraw = () => {
+    msg.innerText = "It's a draw";
+    turn.textContent = "Game over";
+    robot.look(null);
+    robot.mood("draw");
+    robot.say("Stalemate detected. Recalibrating…");
+    resultTimer = setTimeout(() => {
+        msgContainer.classList.remove("hide");
+        newGameBtn.focus();
+    }, 900);
 };
 
 const checkWinner = () =>{
@@ -73,9 +126,13 @@ const checkWinner = () =>{
                 if (pos1val === pos2val && pos2val === pos3val){
                     //console.log("Winner",pos1val);
 
-                    showWinner(pos1val);
+                    showWinner(pos1val, pattern);
+                    return;
                 }
             }
+    }
+    if ([...boxes].every((box) => box.innerText !== "")) {
+        showDraw();
     }
 };
 
